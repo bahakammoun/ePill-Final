@@ -686,7 +686,7 @@ class DrugDetail extends React.Component {
 					</a>
 					{this.state.showAdditionalInfoForSideEffects && this.state.filteredChronicDiseases.map(sideEffect =>
 						<div className="alert alert-light" key={sideEffect.id} >
-							<strong style ={{color:"black",paddingRight:'25px',fontSize: '16px',paddingLeft:'20px',paddingdown:'20px' }}>{'There are side effects to your disease related to'+ sideEffect.diseaseGroup.diseaseGroup} </strong>
+							<strong style ={{color:"black",paddingRight:'25px',fontSize: '16px',paddingLeft:'20px',paddingdown:'20px' }}>{'There are side related to  your disease '+ sideEffect.diseaseGroup.diseaseGroup} </strong>
 							<a onClick={() => this.toggleShowAdditionalInfoFor(sideEffect)}>
 								[{!sideEffect.showAdditionalInfo && <span>{t('viewDetails')}</span> }
 								{sideEffect.showAdditionalInfo && <span>{t('hideDetails')}</span> }]
@@ -872,11 +872,23 @@ class DrugDetail extends React.Component {
 			return false
 
 		});
+		let drugFeatures1 = [...this.state.preferredDrugFeature];
+		drugFeatures1.filter(drugFeature => {
+			if (!this.state.drug.drugFeature) {
+				return false;
+			}
+			for (let i = 0; i < this.state.drug.drugFeature.length; i++) {
+				if (drugFeature.id == this.state.drug.drugFeature[i].id) return true;
+			}
+			return false;
+		})
 		return (
-			<div className="alert-custom col-xs-12 col-sm-12 col-md-12 col-lg-12" style={{marginBottom:'30px',marginTop:'30px'}}>
-				<div style={{lineHeight: '140%'}}>
-					<strong style={{paddingBottom:'30px',paddingtop:'20px',lineHeight: '200%',fontSize: '18px'}}> You can here find a drug alternatives to this drug that can match your preferred drug features</strong>
-
+			<div >
+				{drugFeatures1.length > 0 &&
+				<div className="alert alert-success" role="alert">
+					<span className="glyphicon glyphicon-ok" style={{size:'120%',paddingRight:'30px'}}></span>
+					<strong style={{fontSize: '16px'}}>{User.firstname + ', This drug is compatible with:'} <span>{drugFeatures1.map(drugFeature =>(<span>{drugFeature.drugFeature} </span>)).reduce((prev, curr) => [prev, ', ', curr])}</span> </strong>
+				</div>}
 					{drugFeatures.filter(drugFeature => {
 						if (!this.state.drug.drugFeature) {
 							return true;
@@ -894,8 +906,21 @@ class DrugDetail extends React.Component {
 							}
 							return false;
 						})
+						if (compDrugs.length==0){
+							return(
+								<div className=" col-xs-12 col-sm-12 col-md-12 col-lg-12" style={{marginBottom:'30px',marginTop:'30px'}}>
+								<div style={{color:'#000000',backgroundColor:'#f6dfdf', fontSize: '15px',lineHeight: '250%' }}>
+									<span className="glyphicon glyphicon-remove-sign" style={{size:'120%',paddingRight:'10px',paddingLeft:'25px'}}></span>
+									<span>This drug does is not compliant with the drug feature  </span>
+									<span style={{fontWeight: '700',size:'110%' }}>{drugFeature.drugFeature} </span>
+									<span> from your preferences! and There is no alternatives to this drug that have this drug fearture</span>
+								</div>
+								</div>
+									)
+						}
 						return (
-							<div >
+							<div className="alert-custom col-xs-12 col-sm-12 col-md-12 col-lg-12" style={{marginBottom:'30px',marginTop:'30px'}}>
+								<div style={{lineHeight: '140%'}}>
 								<div style={{color:'#000000',backgroundColor:'#f6dfdf', fontSize: '15px',lineHeight: '250%' }}>
 									<span className="glyphicon glyphicon-remove-sign" style={{size:'120%',paddingRight:'10px',paddingLeft:'25px'}}></span>
 								<span>This drug does is not compliant with the drug feature  </span>
@@ -916,6 +941,7 @@ class DrugDetail extends React.Component {
 										);
 									})}
 								</div>}
+								</div>
 							</div>
 
 
@@ -924,7 +950,7 @@ class DrugDetail extends React.Component {
 					}
 					)
 				}
-			</div>
+
 			</div>
 		);
 	}
