@@ -250,6 +250,7 @@ a.wide { display : block }
 
 .drug-detail-header .additional-information p {
 	text-align:right;
+
 }
 
 .drug-detail-header .additional-information p a {
@@ -753,4 +754,23 @@ a.wide { display : block }
 	color: #0ca49a;
 	height:200px;
 	width:100%;
+}
+
+.alert-custom{
+	background-color: #edfdfa;
+	color: #000000;
+	border-style: solid;
+	border-color: #f3f0f0;
+
+}
+.alert-custom2{
+
+	background-color: #edfdfa;
+	color: #000000;
+	padding-bottom: 40px;
+	border-style: solid;
+	border-color: #f3f0f0;
+
+
+
 }
